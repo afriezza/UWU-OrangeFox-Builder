@@ -168,7 +168,7 @@ runs:
             git clone ${{ inputs.DEVICE_TREE }} -b ${{ inputs.DEVICE_TREE_BRANCH }} ${{ inputs.DEVICE_PATH }}
         fi
 
-    - name: 🦊 Building OrangeFox
+     - name: 🦊 Building OrangeFox
       shell: bash
       env:
         TG_CHAT_ID: ${{ inputs.TG_CHAT_ID }}
@@ -177,22 +177,17 @@ runs:
         CODENAME: ${{ inputs.DEVICE_NAME }}
         GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
-    set +e
-    source config.sh
-    timeStart
-    # Masuk ke folder
-    cd ${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}
-
-    # Cek apakah filenya ada
-    ls -l bootable/recovery/orangefox.mk
-
-    # Patch dengan pesan status
-    if [ -f bootable/recovery/orangefox.mk ]; then
-        sed -i 's/FOX_VERSION/FOX_MAINTAINER_PATCH_VERSION/g' bootable/recovery/orangefox.mk
-        echo "Patch berhasil diterapkan."
-    else
-        echo "File orangefox.mk tidak ditemukan!"
-    fi
+        set +e
+        source config.sh
+        timeStart
+        cd ${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}
+        ls -l bootable/recovery/orangefox.mk
+        if [ -f bootable/recovery/orangefox.mk ]; then
+            sed -i 's/FOX_VERSION/FOX_MAINTAINER_PATCH_VERSION/g' bootable/recovery/orangefox.mk
+            echo "Patch berhasil diterapkan."
+        else
+            echo "File orangefox.mk tidak ditemukan!"
+        fi
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         BUILDLOG="${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}/build.log"
