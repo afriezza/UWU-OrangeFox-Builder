@@ -181,6 +181,7 @@ runs:
         source config.sh
         timeStart
         cd ${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}
+        sed -i 's/FOX_VERSION/FOX_MAINTAINER_PATCH_VERSION/g' bootable/recovery/orangefox.mk
         echo -e ${cya} "##########################################"
         echo -e ${cya} "$(figlet "OrageFox")"
         echo -e ${cya} "##########################################"
