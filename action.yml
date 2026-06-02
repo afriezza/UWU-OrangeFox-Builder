@@ -177,14 +177,22 @@ runs:
         CODENAME: ${{ inputs.DEVICE_NAME }}
         GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
-        set +e
-        source config.sh
-        timeStart
-        cd ${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}
+    set +e
+    source config.sh
+    timeStart
+    # Masuk ke folder
+    cd ${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}
+
+    # Cek apakah filenya ada
+    ls -l bootable/recovery/orangefox.mk
+
+    # Patch dengan pesan status
+    if [ -f bootable/recovery/orangefox.mk ]; then
         sed -i 's/FOX_VERSION/FOX_MAINTAINER_PATCH_VERSION/g' bootable/recovery/orangefox.mk
-        echo -e ${cya} "##########################################"
-        echo -e ${cya} "$(figlet "OrageFox")"
-        echo -e ${cya} "##########################################"
+        echo "Patch berhasil diterapkan."
+    else
+        echo "File orangefox.mk tidak ditemukan!"
+    fi
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         BUILDLOG="${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}/build.log"
@@ -193,7 +201,7 @@ runs:
         build_message "lunch twrp_${{ inputs.DEVICE_NAME }}-eng"
         lunch twrp_${{ inputs.DEVICE_NAME }}-eng
         sleep 5
-        build_message "Building... 🛠️"
+        build_message "Building...kuntul 🛠️"
         mkfifo -m 644 reading
         tee -a ${BUILDLOG} < reading & progress & mka adbd ${{ inputs.BUILD_TARGET }}image -j$(nproc --all) > reading
         retVal=$?
