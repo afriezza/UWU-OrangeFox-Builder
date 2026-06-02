@@ -168,7 +168,7 @@ runs:
             git clone ${{ inputs.DEVICE_TREE }} -b ${{ inputs.DEVICE_TREE_BRANCH }} ${{ inputs.DEVICE_PATH }}
         fi
 
-     - name: 🦊 Building OrangeFox
+         - name: 🦊 Building OrangeFox
       shell: bash
       env:
         TG_CHAT_ID: ${{ inputs.TG_CHAT_ID }}
@@ -183,10 +183,10 @@ runs:
         cd ${GITHUB_ACTION_PATH}/OrangeFox/fox_${{ inputs.FOX_SYNC_BRANCH }}
         ls -l bootable/recovery/orangefox.mk
         if [ -f bootable/recovery/orangefox.mk ]; then
-            sed -i 's/FOX_VERSION/FOX_MAINTAINER_PATCH_VERSION/g' bootable/recovery/orangefox.mk
-            echo "Patch berhasil diterapkan."
+          sed -i 's/FOX_VERSION/FOX_MAINTAINER_PATCH_VERSION/g' bootable/recovery/orangefox.mk
+          echo "Patch berhasil diterapkan."
         else
-            echo "File orangefox.mk tidak ditemukan!"
+          echo "File orangefox.mk tidak ditemukan!"
         fi
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
@@ -196,7 +196,7 @@ runs:
         build_message "lunch twrp_${{ inputs.DEVICE_NAME }}-eng"
         lunch twrp_${{ inputs.DEVICE_NAME }}-eng
         sleep 5
-        build_message "Building...kuntul 🛠️"
+        build_message "Building... 🛠️"
         mkfifo -m 644 reading
         tee -a ${BUILDLOG} < reading & progress & mka adbd ${{ inputs.BUILD_TARGET }}image -j$(nproc --all) > reading
         retVal=$?
