@@ -168,7 +168,7 @@ runs:
             git clone ${{ inputs.DEVICE_TREE }} -b ${{ inputs.DEVICE_TREE_BRANCH }} ${{ inputs.DEVICE_PATH }}
         fi
 
-             - name: 🦊 Building OrangeFox
+    - name: 🦊 Building OrangeFox
       shell: bash
       env:
         TG_CHAT_ID: ${{ inputs.TG_CHAT_ID }}
